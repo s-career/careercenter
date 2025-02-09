@@ -92,17 +92,19 @@ class App:
     
         #System status
         self.game_start = False 
-        self.game_goal = False 
+        self.talking = False 
         self.answered = False
         self.paused = False
         self.switched = False
         self.start_message = False
         self.quit_flag = False
+        self.finished_flag = False
      
         #ここで起動時の処理をします                                
         pyxel.init(128, 128)        
         pyxel.load('./sample03.pyxres')  
         pyxel.mouse(False)  
+        self.dog_color = pyxel.rndi(0,5)
         self.player_pos = [16, 16]         
         pyxel.run(self.update, self.draw)
 
@@ -129,11 +131,13 @@ class App:
                     self.game_start = True
                 elif 80 < pyxel.mouse_y <= 88:
                     self.quit_flag = True
-                    pyxel.quit()
-                elif self.start_message == False and 8*14 < pyxel.mouse_y <= 8*15:
+                    #pyxel.quit()
+                elif self.start_message == False and self.quit_flag == False and 8*11 < pyxel.mouse_y <= 8*15:
                     self.start_message = True
+                elif self.quit_flag == True:
+                    pyxel.quit()
             else:
-                if 8*14 < pyxel.mouse_y <= 8*15:
+                if 8*11 < pyxel.mouse_y <= 8*15:
                     self.answered = True
 
                             
@@ -181,9 +185,9 @@ class App:
         elif t == (4, 3) or t == (5, 3):
             self.player_pos = [7*8, 7*8]
             pyxel.camera(0, 0)
-            self.game_goal = False
+            self.talking = False
         elif t == (4, 5):
-            self.game_goal = True
+            self.talking = True
             self.Draw_textbox(1)
         else:
             pass
@@ -193,7 +197,8 @@ class App:
         pyxel.cls(0) 
         
         pyxel.bltm(0, 0, 0, 0, 0, 128, 256)       
-        pyxel.blt(self.player_pos[0], self.player_pos[1], 0, 0, 0, 8, 8, 14)
+        #pyxel.blt(self.player_pos[0], self.player_pos[1], 0, 0, 0, 8, 8, 14)
+        pyxel.blt(self.player_pos[0], self.player_pos[1], 0, 8*self.dog_color, 0, 8, 8, 14)
 
         #Draw title text
         if self.game_start == False:
@@ -208,10 +213,9 @@ class App:
             self.Draw_fonts(["KI","ya","RI","SE","NN","NI","I","KO","U"], 8*3, 8*12)
             pyxel.text(40, 8*14, "Continue...", 7)
         else:
-            if self.game_goal == False and self.answered == False and self.switched == False:
+            if self.talking == False and self.answered == False and self.switched == False:
                 self.ReverseMap()
-
-        if self.game_goal == True:
+        if self.talking == True:
             self.paused = True
             self.Draw_fonts(["KI","ya","RI","SE","NN","HE","YO","U","KO","SO"], 8*3, 8*16+8*11)
             pyxel.text(40, 8*16+8*14, "Continue...", 7)
@@ -221,6 +225,12 @@ class App:
             self.Draw_fonts(["KO","TA","E","HA","NA","I","SI","yo","DA","YO"], 8*3, 8*16+8*11)
             self.Draw_fonts(["KI","ya","RI","SE","NN","NI","KI","TE","NE"], 8*3, 8*16+8*12)
             #pyxel.text(40, 8*16+8*14, "Continue...", 7)
+
+        if self.quit_flag == True:
+            pyxel.cls(0)
+            #self.Draw_textbox(0)
+            self.Draw_fonts(["A","KI","RA","ME","TI","ya","DA","ME","DA","YO"], 8*3, 8*12)
+            pyxel.text(40, 8*14, "Restart...", 7)
 
     def Draw_fonts(self,txt,x,y):  
         txt_count = len(txt)      
