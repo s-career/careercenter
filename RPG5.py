@@ -103,7 +103,8 @@ class App:
         #ここで起動時の処理をします                                
         pyxel.init(128, 128)        
         pyxel.load('./sample03.pyxres')  
-        pyxel.mouse(False)  
+        pyxel.mouse(False)
+        #pyxel.mouse(True) # for debug
         self.dog_color = pyxel.rndi(0,5)
         self.player_pos = [16, 16]         
         pyxel.run(self.update, self.draw)
@@ -139,7 +140,8 @@ class App:
             else:
                 if 8*11 < pyxel.mouse_y <= 8*15:
                     self.answered = True
-
+            if self.finished_flag == True:
+                pyxel.quit()
                             
         if pyxel.btnp(pyxel.KEY_RIGHT) or rightClick:
             if self.move_check(self.player_pos[0]+8, self.player_pos[1]):
@@ -224,7 +226,8 @@ class App:
             self.Erase_fonts(["KI","ya","RI","SE","NN","HE","YO","U","KO","SO"], 8*5, 8*16+8*14)
             self.Draw_fonts(["KO","TA","E","HA","NA","I","SI","yo","DA","YO"], 8*3, 8*16+8*11)
             self.Draw_fonts(["KI","ya","RI","SE","NN","NI","KI","TE","NE"], 8*3, 8*16+8*12)
-            #pyxel.text(40, 8*16+8*14, "Continue...", 7)
+            self.finished_flag = True
+            pyxel.text(40, 8*16+8*14, "Continue...", 7)
 
         if self.quit_flag == True:
             pyxel.cls(0)
