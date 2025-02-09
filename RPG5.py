@@ -136,12 +136,15 @@ class App:
                 elif self.start_message == False and self.quit_flag == False and 8*11 < pyxel.mouse_y <= 8*15:
                     self.start_message = True
                 elif self.quit_flag == True:
-                    pyxel.quit()
+                    #pyxel.quit()
+                    self.ResetFlags()
             else:
                 if 8*11 < pyxel.mouse_y <= 8*15:
                     self.answered = True
             if self.finished_flag == True:
-                pyxel.quit()
+                #pyxel.quit()
+                self.ResetFlags()
+
                             
         if pyxel.btnp(pyxel.KEY_RIGHT) or rightClick:
             if self.move_check(self.player_pos[0]+8, self.player_pos[1]):
@@ -341,4 +344,14 @@ class App:
         pyxel.tilemaps[0].pset(13, 16+12, (9, 6))
         pyxel.tilemaps[0].pset(12, 16+13, (8, 7))
         pyxel.tilemaps[0].pset(13, 16+13, (9, 7))
+
+    def ResetFlags(self):
+        self.game_start = False 
+        self.talking = False 
+        self.answered = False
+        self.paused = False
+        self.switched = False
+        self.start_message = False
+        self.quit_flag = False
+        self.finished_flag = False
 App()
